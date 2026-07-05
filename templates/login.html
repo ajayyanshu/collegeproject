@@ -56,6 +56,52 @@
             transform: scale(0.95);
         }
 
+        /* Chat Widget Styles */
+        .chat-widget-button {
+            background-color: #FF4B2B;
+            box-shadow: 0 4px 12px rgba(255, 75, 43, 0.4);
+            transition: all 0.3s ease;
+            position: relative; /* Added for badge positioning */
+        }
+        .chat-widget-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: #EF4444; /* Tailwind red-500 */
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            border: 2px solid white; /* To make it pop against the button */
+            animation: pulse-badge 2s infinite;
+        }
+
+        @keyframes pulse-badge {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .chat-window {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform-origin: bottom right;
+        }
+        .chat-window.hidden-chat {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
         /* Mobile Responsive Styles */
         @media (max-width: 480px) {
             .form-container form {
@@ -111,6 +157,37 @@
         </div>
     </div>
 
+    <!-- Floating Support Chatbot Widget -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <!-- Chat Window -->
+        <div id="chat-window" class="chat-window hidden-chat bg-white rounded-2xl w-72 mb-4 border border-gray-100 overflow-hidden">
+            <div class="bg-[#FF4B2B] text-white p-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-robot text-xl"></i>
+                    <h3 class="font-semibold">Sofia AI Support</h3>
+                </div>
+                <button id="close-chat-btn" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-5 text-sm text-gray-700 bg-gray-50">
+                <p class="mb-3">Hi there! 👋</p>
+                <p class="mb-4">If you are facing any issues creating an account or logging in, our support team is here to help.</p>
+                <p class="mb-2">Contact us directly at:</p>
+                <a href="mailto:ajayyansh@gmail.com" class="inline-flex items-center gap-2 text-[#FF4B2B] font-semibold bg-[#FF4B2B] bg-opacity-10 px-3 py-2 rounded-lg hover:bg-opacity-20 transition">
+                    <i class="fas fa-envelope"></i>
+                    ajayyansh@gmail.com
+                </a>
+            </div>
+        </div>
+
+        <!-- Chat Toggle Button -->
+        <button id="chat-toggle-btn" class="chat-widget-button w-14 h-14 rounded-full flex items-center justify-center text-white cursor-pointer focus:outline-none">
+            <span id="chat-badge" class="notification-badge">1</span>
+            <i class="fas fa-comment-dots text-2xl" id="chat-icon"></i>
+        </button>
+    </div>
+
     <script>
         const signInForm = document.getElementById('sign-in-form');
         const forgotPasswordForm = document.getElementById('forgot-password-form');
@@ -118,6 +195,35 @@
         const passwordToggleIcon = document.getElementById('password-toggle-icon');
         const forgotPasswordLink = document.getElementById('forgot-password-link');
         const backToLoginLink = document.getElementById('back-to-login-link');
+        
+        // Chat Widget Elements
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const chatIcon = document.getElementById('chat-icon');
+        const chatBadge = document.getElementById('chat-badge'); // New reference for badge
+
+        // --- Toggle Chat Widget ---
+        function toggleChat() {
+            chatWindow.classList.toggle('hidden-chat');
+            
+            // Hide the badge when the chat is opened for the first time
+            if (!chatWindow.classList.contains('hidden-chat')) {
+                chatBadge.style.display = 'none';
+            }
+
+            if(chatWindow.classList.contains('hidden-chat')){
+                chatIcon.classList.replace('fa-times', 'fa-comment-dots');
+            } else {
+                chatIcon.classList.replace('fa-comment-dots', 'fa-times');
+            }
+        }
+        
+        chatToggleBtn.addEventListener('click', toggleChat);
+        closeChatBtn.addEventListener('click', () => {
+            chatWindow.classList.add('hidden-chat');
+            chatIcon.classList.replace('fa-times', 'fa-comment-dots');
+        });
 
         // --- Toggle between Sign In and Forgot Password forms ---
         forgotPasswordLink.addEventListener('click', (e) => {
@@ -177,7 +283,6 @@
             messageEl.classList.remove('text-green-500', 'text-red-500');
 
             try {
-                // *** FIX: Changed URL from /api/forgot-password to /api/request_password_reset ***
                 const response = await fetch('/api/request_password_reset', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
