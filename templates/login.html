@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full">
-<head>  
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sofia AI </title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Sofia AI</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f6f5f7;
         }
+
         .auth-main-container {
             background-color: #fff;
             border-radius: 10px;
-            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
             position: relative;
             overflow: hidden;
             width: 420px;
             max-width: 100%;
         }
+
         .form-container form {
             background-color: #FFFFFF;
             display: flex;
@@ -29,6 +32,7 @@
             padding: 3rem 50px;
             text-align: center;
         }
+
         .auth-main-container input {
             background-color: #f6f5f7;
             border: none;
@@ -38,7 +42,9 @@
             border-radius: 8px;
             font-size: 14px;
         }
-        .auth-main-container button, .auth-main-container .button-style {
+
+        .auth-main-container button,
+        .auth-main-container .button-style {
             border-radius: 20px;
             border: 1px solid #FF4B2B;
             background-color: #FF4B2B;
@@ -52,38 +58,262 @@
             cursor: pointer;
             margin-top: 1rem;
         }
+
         .auth-main-container button:active {
             transform: scale(0.95);
         }
 
-        /* Mobile Responsive Styles */
+        /* ---- Floating Chat / Support Icon ---- */
+        .support-float {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9999;
+        }
+
+        .support-float .support-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #FF4B2B;
+            color: #fff;
+            border: none;
+            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.45);
+            font-size: 26px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .support-float .support-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 28px rgba(255, 75, 43, 0.6);
+        }
+
+        .support-float .support-btn .pulse-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 14px;
+            height: 14px;
+            background: #22c55e;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.6;
+            }
+        }
+
+        /* ---- Support Popup Card ---- */
+        .support-popup {
+            position: absolute;
+            bottom: 76px;
+            right: 0;
+            width: 320px;
+            max-width: 82vw;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+            padding: 1.6rem 1.5rem 1.5rem;
+            opacity: 0;
+            transform: translateY(18px) scale(0.96);
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            text-align: left;
+        }
+
+        .support-popup.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .support-popup .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .support-popup .close-popup:hover {
+            color: #333;
+        }
+
+        .support-popup h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #1e1e2a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .support-popup h4 i {
+            color: #FF4B2B;
+        }
+
+        .support-popup .sub-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .support-popup .contact-email-box {
+            background: #f8f7fa;
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border: 1px solid #eee;
+            margin-bottom: 1rem;
+        }
+
+        .support-popup .contact-email-box span {
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: #1e1e2a;
+            word-break: break-all;
+        }
+
+        .support-popup .contact-email-box .copy-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .support-popup .contact-email-box .copy-btn:hover {
+            background: #eae9f0;
+            color: #FF4B2B;
+        }
+
+        .support-popup .contact-email-box .copy-btn.copied {
+            color: #22c55e;
+        }
+
+        .support-popup .send-email-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: #FF4B2B;
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+
+        .support-popup .send-email-btn:hover {
+            background: #e03e1f;
+        }
+
+        .support-popup .send-email-btn i {
+            font-size: 14px;
+        }
+
+        /* toast */
+        .toast-copy {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            background: #1e1e2a;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+            z-index: 99999;
+        }
+
+        .toast-copy.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile responsive */
         @media (max-width: 480px) {
             .form-container form {
                 padding-left: 2rem;
                 padding-right: 2rem;
+            }
+
+            .support-popup {
+                width: 290px;
+                right: -10px;
+            }
+
+            .support-float {
+                bottom: 18px;
+                right: 18px;
+            }
+
+            .support-float .support-btn {
+                width: 54px;
+                height: 54px;
+                font-size: 22px;
             }
         }
     </style>
 </head>
 <body class="flex items-center justify-center h-full p-4">
 
+    <!-- ===== LOGIN CARD ===== -->
     <div class="auth-main-container">
         <div class="form-container">
+
+            <!-- Sign In Form -->
             <form id="sign-in-form" autocomplete="off" class="space-y-4">
                 <div class="text-center">
                     <h1 class="text-3xl font-bold">Sign In</h1>
-                    <span class="text-sm text-gray-500">to continue to Sofia AI </span>
-                </div>
-                
-                <div class="w-full text-left">
-                    <label for="signin-email" class="text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="signin-email" placeholder="Email" required autocomplete="email" class="mt-1"/>
+                    <span class="text-sm text-gray-500">to continue to Sofia AI</span>
                 </div>
 
                 <div class="w-full text-left">
-                     <label for="signin-password" class="text-sm font-medium text-gray-700">Password</label>
+                    <label for="signin-email" class="text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="signin-email" placeholder="Email" required autocomplete="email" class="mt-1" />
+                </div>
+
+                <div class="w-full text-left">
+                    <label for="signin-password" class="text-sm font-medium text-gray-700">Password</label>
                     <div class="relative mt-1">
-                        <input type="password" id="signin-password" placeholder="Password" required autocomplete="current-password"/>
+                        <input type="password" id="signin-password" placeholder="Password" required autocomplete="current-password" />
                         <i class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-gray-500" id="password-toggle-icon"></i>
                     </div>
                 </div>
@@ -94,111 +324,236 @@
                     <p id="signin-error" class="text-red-500 text-sm mt-2 h-5"></p>
                 </div>
 
-                 <p class="pt-2 text-sm">
-                    Don't have an account? 
+                <p class="pt-2 text-sm">
+                    Don't have an account?
                     <a href="/signup" class="font-semibold text-blue-600 hover:underline">Sign Up</a>
                 </p>
             </form>
 
+            <!-- Forgot Password Form -->
             <form id="forgot-password-form" autocomplete="off" style="display: none;">
                 <h1 class="text-3xl font-bold mb-2">Reset Password</h1>
                 <span class="text-sm text-gray-500 mb-4">Enter your email to get a reset link</span>
-                <input type="email" id="forgot-email" placeholder="Email" required autocomplete="email"/>
+                <input type="email" id="forgot-email" placeholder="Email" required autocomplete="email" />
                 <button type="submit" class="button-style">Send Reset Link</button>
                 <p id="forgot-message" class="text-sm mt-2 h-5"></p>
                 <a href="#" id="back-to-login-link" class="text-sm mt-4 text-gray-600 hover:underline">Back to Sign In</a>
             </form>
+
         </div>
     </div>
 
+    <!-- ===== FLOATING SUPPORT ICON ===== -->
+    <div class="support-float" id="supportFloat">
+        <button class="support-btn" id="supportToggle" aria-label="Contact support">
+            <i class="fa-regular fa-comment-dots"></i>
+            <span class="pulse-dot"></span>
+        </button>
+
+        <!-- Support Popup -->
+        <div class="support-popup" id="supportPopup">
+            <button class="close-popup" id="closePopup" aria-label="Close support">
+                <i class="fa-regular fa-xmark"></i>
+            </button>
+
+            <h4>
+                <i class="fa-regular fa-circle-question"></i>
+                Need help?
+            </h4>
+            <p class="sub-text">
+                Facing issues with sign in or account creation?<br />
+                Reach out to our team.
+            </p>
+
+            <div class="contact-email-box">
+                <span id="supportEmailDisplay">ajayyanshu@gmail.com</span>
+                <button class="copy-btn" id="copyEmailBtn" aria-label="Copy email">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+
+            <a href="mailto:ajayyanshu@gmail.com?subject=Sofia%20AI%20Support%20Request" class="send-email-btn">
+                <i class="fa-regular fa-envelope"></i> Send Email
+            </a>
+
+            <p style="font-size:0.7rem; color:#9ca3af; margin-top:12px; text-align:center;">
+                We typically reply within 24 hours.
+            </p>
+        </div>
+    </div>
+
+    <!-- Toast for copy -->
+    <div class="toast-copy" id="copyToast">📋 Email copied!</div>
+
+    <!-- ===== JAVASCRIPT ===== -->
     <script>
-        const signInForm = document.getElementById('sign-in-form');
-        const forgotPasswordForm = document.getElementById('forgot-password-form');
-        const passwordInput = document.getElementById('signin-password');
-        const passwordToggleIcon = document.getElementById('password-toggle-icon');
-        const forgotPasswordLink = document.getElementById('forgot-password-link');
-        const backToLoginLink = document.getElementById('back-to-login-link');
+        (function() {
+            'use strict';
 
-        // --- Toggle between Sign In and Forgot Password forms ---
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            signInForm.style.display = 'none';
-            forgotPasswordForm.style.display = 'flex';
-        });
+            // --- DOM refs ---
+            const signInForm = document.getElementById('sign-in-form');
+            const forgotPasswordForm = document.getElementById('forgot-password-form');
+            const passwordInput = document.getElementById('signin-password');
+            const passwordToggleIcon = document.getElementById('password-toggle-icon');
+            const forgotPasswordLink = document.getElementById('forgot-password-link');
+            const backToLoginLink = document.getElementById('back-to-login-link');
 
-        backToLoginLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            forgotPasswordForm.style.display = 'none';
-            signInForm.style.display = 'flex';
-        });
+            // Support
+            const supportToggle = document.getElementById('supportToggle');
+            const supportPopup = document.getElementById('supportPopup');
+            const closePopup = document.getElementById('closePopup');
+            const copyBtn = document.getElementById('copyEmailBtn');
+            const toast = document.getElementById('copyToast');
+            const supportEmailDisplay = document.getElementById('supportEmailDisplay');
 
-        // --- Toggle Password Visibility ---
-        passwordToggleIcon.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            passwordToggleIcon.classList.toggle('fa-eye');
-            passwordToggleIcon.classList.toggle('fa-eye-slash');
-        });
+            // --- Toggle Sign In / Forgot Password ---
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                signInForm.style.display = 'none';
+                forgotPasswordForm.style.display = 'flex';
+                // close support popup if open
+                supportPopup.classList.remove('open');
+            });
 
-        // --- Handle Sign In Form Submission ---
-        signInForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('signin-email').value.trim();
-            const password = passwordInput.value;
-            const errorEl = document.getElementById('signin-error');
-            errorEl.textContent = '';
-            
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ email, password })
-                });
+            backToLoginLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                forgotPasswordForm.style.display = 'none';
+                signInForm.style.display = 'flex';
+                supportPopup.classList.remove('open');
+            });
 
-                const data = await response.json();
+            // --- Toggle Password Visibility ---
+            passwordToggleIcon.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                passwordToggleIcon.classList.toggle('fa-eye');
+                passwordToggleIcon.classList.toggle('fa-eye-slash');
+            });
 
-                if (response.ok && data.success) {
-                    window.location.href = '/';
+            // --- Support: toggle popup ---
+            function togglePopup(forceState) {
+                const isOpen = supportPopup.classList.contains('open');
+                if (typeof forceState === 'boolean') {
+                    if (forceState) supportPopup.classList.add('open');
+                    else supportPopup.classList.remove('open');
                 } else {
-                    errorEl.textContent = data.error || 'Invalid email or password.';
+                    supportPopup.classList.toggle('open');
                 }
-            } catch(error) {
-                console.error('Login Error:', error);
-                errorEl.textContent = "Could not connect to the server.";
             }
-        });
 
-        // --- Handle Forgot Password Form Submission ---
-        forgotPasswordForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgot-email').value.trim();
-            const messageEl = document.getElementById('forgot-message');
-            messageEl.textContent = 'Sending...';
-            messageEl.classList.remove('text-green-500', 'text-red-500');
+            supportToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePopup();
+            });
 
-            try {
-                // *** FIX: Changed URL from /api/forgot-password to /api/request_password_reset ***
-                const response = await fetch('/api/request_password_reset', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ email })
-                });
+            closePopup.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePopup(false);
+            });
 
-                const data = await response.json();
+            // Close popup when clicking outside
+            document.addEventListener('click', (e) => {
+                const container = document.getElementById('supportFloat');
+                if (container && !container.contains(e.target)) {
+                    supportPopup.classList.remove('open');
+                }
+            });
 
-                if (response.ok && data.success) {
-                    messageEl.textContent = "Password reset link sent to your email.";
-                    messageEl.classList.add('text-green-500');
-                } else {
-                    messageEl.textContent = data.error || 'Could not process request.';
+            // --- Copy email ---
+            copyBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const email = supportEmailDisplay.textContent.trim();
+                try {
+                    await navigator.clipboard.writeText(email);
+                    showToast('📋 Email copied!');
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => copyBtn.classList.remove('copied'), 2000);
+                } catch (_) {
+                    // fallback
+                    const input = document.createElement('input');
+                    input.value = email;
+                    document.body.appendChild(input);
+                    input.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+                    showToast('📋 Email copied!');
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => copyBtn.classList.remove('copied'), 2000);
+                }
+            });
+
+            // --- Toast helper ---
+            let toastTimeout = null;
+
+            function showToast(msg) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2200);
+            }
+
+            // --- Sign In Submit ---
+            signInForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signin-email').value.trim();
+                const password = passwordInput.value;
+                const errorEl = document.getElementById('signin-error');
+                errorEl.textContent = '';
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        window.location.href = '/';
+                    } else {
+                        errorEl.textContent = data.error || 'Invalid email or password.';
+                    }
+                } catch (error) {
+                    console.error('Login Error:', error);
+                    errorEl.textContent = 'Could not connect to the server.';
+                }
+            });
+
+            // --- Forgot Password Submit ---
+            forgotPasswordForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('forgot-email').value.trim();
+                const messageEl = document.getElementById('forgot-message');
+                messageEl.textContent = 'Sending...';
+                messageEl.classList.remove('text-green-500', 'text-red-500');
+
+                try {
+                    const response = await fetch('/api/request_password_reset', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        messageEl.textContent = 'Password reset link sent to your email.';
+                        messageEl.classList.add('text-green-500');
+                    } else {
+                        messageEl.textContent = data.error || 'Could not process request.';
+                        messageEl.classList.add('text-red-500');
+                    }
+                } catch (error) {
+                    console.error('Forgot Password Error:', error);
+                    messageEl.textContent = 'Could not connect to the server.';
                     messageEl.classList.add('text-red-500');
                 }
-            } catch(error) {
-                console.error('Forgot Password Error:', error);
-                messageEl.textContent = "Could not connect to the server.";
-                messageEl.classList.add('text-red-500');
-            }
-        });
+            });
+
+        })();
     </script>
 </body>
 </html>
